@@ -4,7 +4,7 @@ import { ICharacter, PaginationInfo } from "@/interfaces";
 
 const initializer = HTTP.getInstance()
 
-interface IResponseListCharacter {
+export interface IResponseListCharacter {
     info: PaginationInfo,
     results: ICharacter[]
 }
@@ -14,6 +14,3 @@ export const getListCharacter = async () => {
 }
 
 
-export const getListPaginations = async (url: string) => {
-    return await initializer.get<IResponseListCharacter>(url)
-}
