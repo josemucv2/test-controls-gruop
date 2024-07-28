@@ -2,7 +2,7 @@
 import { Button, Input } from "@/components/ui";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useCharacterStore } from "@/store/characters";
+// import { useCharacterStore } from "@/store/characters";
 import { useToast } from "@/Hooks/useToast";
 
 type FormLogin = {
@@ -14,7 +14,7 @@ export const Login = () => {
   const { toast } = useToast();
   const goPage = useNavigate();
   const { register, handleSubmit } = useForm<FormLogin>();
-  const getAll = async (data: FormLogin) => {
+  const getAll = async () => {
     try {
       goPage("/app");
     } catch (error: any) {

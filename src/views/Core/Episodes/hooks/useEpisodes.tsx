@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useGetInformation } from "@/Hooks/useGetInformation";
 import { useToast } from "@/Hooks/useToast";
 import { PaginationInfo } from "@/interfaces";
-import { getListCharacter, IResponseListCharacter } from "@/services/character";
-import { useCharacterStore } from "@/store/characters";
+import { useEpisodeStore } from "@/store/episodes";
 import { useState } from "react";
-import { useGetInformation } from "@/Hooks/useGetInformation";
+import { getListEpisodes, IResponseEpisodes } from "@/services/episodes";
 
-export const useHome = () => {
+export const useEpisodes = () => {
   const [loading, setLoading] = useState(false);
-  const { set_character_list } = useCharacterStore();
+  const { set_episode_list } = useEpisodeStore();
   const [pagination, setPaginations] = useState<PaginationInfo>();
   const { toast } = useToast();
   const { getInformation } = useGetInformation();
@@ -16,9 +16,9 @@ export const useHome = () => {
   const getList = async () => {
     setLoading(true);
     try {
-      const list = await getListCharacter();
+      const list = await getListEpisodes();
       setPaginations(list.info);
-      set_character_list(list.results);
+      set_episode_list(list.results);
     } catch (error: any) {
       toast({
         title: "Ha ocurrido un error inesperado",
@@ -35,11 +35,11 @@ export const useHome = () => {
     try {
       const url = direction === "next" ? pagination?.next : pagination?.prev;
       if (url) {
-        const restList = await getInformation<IResponseListCharacter>(url);
+        const restList = await getInformation<IResponseEpisodes>(url);
 
         if (restList) {
           setPaginations(restList.info);
-          set_character_list(restList.results);
+          set_episode_list(restList.results);
         } else {
           throw {
             message: "error in el get",
@@ -55,6 +55,7 @@ export const useHome = () => {
       setLoading(false);
     }
   };
+
   return {
     loading,
     getList,
