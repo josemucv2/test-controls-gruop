@@ -10,3 +10,4 @@ export {
     TableCell,
     TableCaption,
 } from './Table'
+export { LoadingComponent } from './loading'
