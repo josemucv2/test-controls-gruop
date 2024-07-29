@@ -28,7 +28,7 @@ realmente me apaciono mucho presentar esta prueba y fue bastante enriquecedora, 
 2. Entrar al Proyecto
 
 ```bash
-   cd  permission-front
+   cd  test-controls-gruop
 ```
 
 3. Instalar dependenias
