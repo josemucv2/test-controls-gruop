@@ -54,7 +54,7 @@ class HTTP {
         };
 
         const isCompleteURL = /^https?:\/\//i.test(url);
-        const requestURL = isCompleteURL ? url : `https://rickandmortyapi.com/api/${url}`;
+        const requestURL = isCompleteURL ? url : `${import.meta.env.VITE_BASE_URL}${url}`;
 
         try {
             const response = await fetch(requestURL, requestOptions);
