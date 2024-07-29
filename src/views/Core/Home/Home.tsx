@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -14,16 +20,105 @@ import { useEffect } from "react";
 import s from "./home.module.css";
 import { useHome } from "./Hooks/useHome";
 
+const filters_status = [
+  {
+    _id: 1,
+    name: "alive",
+  },
+
+  {
+    _id: 2,
+    name: "dead",
+  },
+  {
+    _id: 3,
+    name: "unknown",
+  },
+];
+
+const filters_gender = [
+  {
+    _id: 1,
+    name: "Female",
+  },
+
+  {
+    _id: 2,
+    name: "Male",
+  },
+  {
+    _id: 3,
+    name: "Genderless",
+  },
+  {
+    _id: 4,
+    name: "unknown",
+  },
+];
+
 export const Home = () => {
   const { character_list } = useCharacterStore();
-  const { loading, getList, pagination, changePage } = useHome();
+  const {
+    loading,
+    getList,
+    pagination,
+    changePage,
+    setStatus,
+    status,
+    gender,
+    setGender,
+  } = useHome();
+
+  const handleStatusChange = async (data: string) => {
+    setStatus(data);
+  };
+
+  const handleGenderChange = async (data: string) => {
+    setGender(data);
+  };
 
   useEffect(() => {
     getList();
-  }, []);
+  }, [status, gender]);
   return (
     <div className="w-full">
       <h1 className="text-xl bold mb-10">Character List</h1>
+
+      <div className="flex space-x-10">
+        <Select onValueChange={handleStatusChange}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select a Status" />
+          </SelectTrigger>
+          <SelectContent className="bg-black text-white">
+            <SelectGroup>
+              {filters_status.map((element) => {
+                return (
+                  <SelectItem value={element.name} key={element._id}>
+                    {element.name}
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+
+        <Select onValueChange={handleGenderChange}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select a Gender" />
+          </SelectTrigger>
+          <SelectContent className="bg-black text-white">
+            <SelectGroup>
+              {filters_gender.map((element) => {
+                return (
+                  <SelectItem value={element.name} key={element._id}>
+                    {element.name}
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
       {loading ? (
         "Cargando...."
       ) : (
