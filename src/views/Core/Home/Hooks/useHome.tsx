@@ -12,11 +12,13 @@ export const useHome = () => {
   const [pagination, setPaginations] = useState<PaginationInfo>();
   const { toast } = useToast();
   const { getInformation } = useGetInformation();
+  const [status, setStatus] = useState("");
+  const [gender, setGender] = useState("");
 
   const getList = async () => {
     setLoading(true);
     try {
-      const list = await getListCharacter();
+      const list = await getListCharacter({ status, gender });
       setPaginations(list.info);
       set_character_list(list.results);
     } catch (error: any) {
@@ -60,5 +62,9 @@ export const useHome = () => {
     getList,
     pagination,
     changePage,
+    setStatus,
+    status,
+    gender,
+    setGender,
   };
 };

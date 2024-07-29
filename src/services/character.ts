@@ -9,8 +9,12 @@ export interface IResponseListCharacter {
     results: ICharacter[]
 }
 
-export const getListCharacter = async () => {
-    return await initializer.get<IResponseListCharacter>('character')
+type Filters = {
+    status?: string
+    gender?: string
 }
 
+export const getListCharacter = async ({ status, gender }: Filters) => {
+    return await initializer.get<IResponseListCharacter>(`character?status=${status}&gender=${gender}`);
+};
 
