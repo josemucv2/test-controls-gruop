@@ -23,3 +23,16 @@ export {
     SelectScrollUpButton,
     SelectScrollDownButton,
 } from './Select'
+
+export {
+    Dialog,
+    DialogPortal,
+    DialogOverlay,
+    DialogClose,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogFooter,
+    DialogTitle,
+    DialogDescription,
+} from './Dialog'

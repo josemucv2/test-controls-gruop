@@ -5,6 +5,7 @@ import { CoreLayout } from "@/layouts/Core";
 import { Home } from "@/views/Core/Home/Home";
 import { Episodes } from "@/views/Core/Episodes";
 import { Register } from "@/views/Auth/Register";
+import { CharacterManually } from "@/views/Core/CharactersManually";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "episodes",
         Component: Episodes,
+      },
+      {
+        path: "character-manually",
+        Component: CharacterManually,
       },
     ],
   },
