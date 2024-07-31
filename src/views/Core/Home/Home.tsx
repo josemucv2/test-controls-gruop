@@ -15,62 +15,53 @@ import {
   TableHeader,
   TableRow,
   Input,
-} from "@/components/ui";
-import { useCharacterStore } from "@/store/characters";
-import { useEffect, useMemo } from "react";
-import s from "./home.module.css";
-import { useHome } from "./Hooks/useHome";
-import { debounce } from "lodash";
+} from '@/components/ui';
+import { useCharacterStore } from '@/store/characters';
+import { useEffect, useMemo } from 'react';
+import s from './home.module.css';
+import { useHome } from './Hooks/useHome';
+import { debounce } from 'lodash';
 
 const filters_status = [
   {
     _id: 1,
-    name: "alive",
+    name: 'alive',
   },
 
   {
     _id: 2,
-    name: "dead",
+    name: 'dead',
   },
   {
     _id: 3,
-    name: "unknown",
+    name: 'unknown',
   },
 ];
 
 const filters_gender = [
   {
     _id: 1,
-    name: "Female",
+    name: 'Female',
   },
 
   {
     _id: 2,
-    name: "Male",
+    name: 'Male',
   },
   {
     _id: 3,
-    name: "Genderless",
+    name: 'Genderless',
   },
   {
     _id: 4,
-    name: "unknown",
+    name: 'unknown',
   },
 ];
 
 export const Home = () => {
   const { character_list } = useCharacterStore();
-  const {
-    loading,
-    getList,
-    pagination,
-    changePage,
-    setStatus,
-    status,
-    gender,
-    setGender,
-    setName,
-  } = useHome();
+  const { loading, getList, pagination, changePage, setStatus, status, gender, setGender } =
+    useHome();
 
   const handleStatusChange = async (data: string) => {
     setStatus(data);
@@ -84,10 +75,9 @@ export const Home = () => {
   const debouncedSetNameAndFetch = useMemo(
     () =>
       debounce((name: string) => {
-        setName(name);
-        getList();
+        getList(name);
       }, 2000),
-    [setName, getList]
+    []
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +86,7 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    getList();
+    getList('');
   }, [status, gender]);
   return (
     <div className="w-full">
@@ -140,7 +130,7 @@ export const Home = () => {
         <Input placeholder="wirte a name" onChange={handleChange} name="name" />
       </div>
       {loading ? (
-        "Cargando...."
+        'Cargando....'
       ) : (
         <div className={s.container_table}>
           <Table>
@@ -167,19 +157,17 @@ export const Home = () => {
             <TableFooter>
               <TableRow>
                 <TableCell colSpan={3}>Total</TableCell>
-                <TableCell className="text-right">
-                  {pagination?.count}
-                </TableCell>
+                <TableCell className="text-right">{pagination?.count}</TableCell>
               </TableRow>
             </TableFooter>
           </Table>
         </div>
       )}
       <div>
-        <Button onClick={() => changePage("prev")} disabled={!pagination?.prev}>
+        <Button onClick={() => changePage('prev')} disabled={!pagination?.prev}>
           Preview
         </Button>
-        <Button onClick={() => changePage("next")} disabled={!pagination?.next}>
+        <Button onClick={() => changePage('next')} disabled={!pagination?.next}>
           Next
         </Button>
       </div>
