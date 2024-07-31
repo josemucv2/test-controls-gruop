@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useToast } from "@/Hooks/useToast";
-import { PaginationInfo } from "@/interfaces";
+import { ICharacter, PaginationInfo } from "@/interfaces";
 import { getListCharacter, IResponseListCharacter } from "@/services/character";
 import { useCharacterStore } from "@/store/characters";
 import { useState } from "react";
@@ -8,17 +8,19 @@ import { useGetInformation } from "@/Hooks/useGetInformation";
 
 export const useHome = () => {
   const [loading, setLoading] = useState(false);
-  const { set_character_list } = useCharacterStore();
+  const { set_character_list, character_list } = useCharacterStore();
   const [pagination, setPaginations] = useState<PaginationInfo>();
   const { toast } = useToast();
   const { getInformation } = useGetInformation();
   const [status, setStatus] = useState("");
   const [gender, setGender] = useState("");
+  const [name, setName] = useState("");
 
   const getList = async () => {
+    console.log(name, "jasndlkjalkjdak;jbd");
     setLoading(true);
     try {
-      const list = await getListCharacter({ status, gender });
+      const list = await getListCharacter({ status, gender, name });
       setPaginations(list.info);
       set_character_list(list.results);
     } catch (error: any) {
@@ -57,6 +59,14 @@ export const useHome = () => {
       setLoading(false);
     }
   };
+
+  const create = (body: ICharacter) => {
+    const copyList = [...character_list];
+
+    copyList.push(body);
+
+    set_character_list(copyList as any);
+  };
   return {
     loading,
     getList,
@@ -66,5 +76,8 @@ export const useHome = () => {
     status,
     gender,
     setGender,
+    setName,
+    name,
+    create,
   };
 };

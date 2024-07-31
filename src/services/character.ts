@@ -11,10 +11,11 @@ export interface IResponseListCharacter {
 
 type Filters = {
     status?: string
-    gender?: string
+    gender?: string,
+    name?: string,
 }
 
-export const getListCharacter = async ({ status, gender }: Filters) => {
-    return await initializer.get<IResponseListCharacter>(`character?status=${status}&gender=${gender}`);
+export const getListCharacter = async ({ status, gender, name }: Filters) => {
+    return await initializer.get<IResponseListCharacter>(`character?status=${status}&gender=${gender}&name=${name}`);
 };
 

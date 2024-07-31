@@ -14,11 +14,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Input,
 } from "@/components/ui";
 import { useCharacterStore } from "@/store/characters";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import s from "./home.module.css";
 import { useHome } from "./Hooks/useHome";
+import { debounce } from "lodash";
 
 const filters_status = [
   {
@@ -67,6 +69,7 @@ export const Home = () => {
     status,
     gender,
     setGender,
+    setName,
   } = useHome();
 
   const handleStatusChange = async (data: string) => {
@@ -75,6 +78,21 @@ export const Home = () => {
 
   const handleGenderChange = async (data: string) => {
     setGender(data);
+  };
+
+  // Memorize the debounced function
+  const debouncedSetNameAndFetch = useMemo(
+    () =>
+      debounce((name: string) => {
+        setName(name);
+        getList();
+      }, 2000),
+    [setName, getList]
+  );
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextValue = event.target.value;
+    debouncedSetNameAndFetch(nextValue);
   };
 
   useEffect(() => {
@@ -118,6 +136,8 @@ export const Home = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
+
+        <Input placeholder="wirte a name" onChange={handleChange} name="name" />
       </div>
       {loading ? (
         "Cargando...."
