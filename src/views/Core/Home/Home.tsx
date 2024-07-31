@@ -21,42 +21,7 @@ import { useEffect, useMemo } from 'react';
 import s from './home.module.css';
 import { useHome } from './Hooks/useHome';
 import { debounce } from 'lodash';
-
-const filters_status = [
-  {
-    _id: 1,
-    name: 'alive',
-  },
-
-  {
-    _id: 2,
-    name: 'dead',
-  },
-  {
-    _id: 3,
-    name: 'unknown',
-  },
-];
-
-const filters_gender = [
-  {
-    _id: 1,
-    name: 'Female',
-  },
-
-  {
-    _id: 2,
-    name: 'Male',
-  },
-  {
-    _id: 3,
-    name: 'Genderless',
-  },
-  {
-    _id: 4,
-    name: 'unknown',
-  },
-];
+import { FILTERS_STATUS, FILTERS_GENDER } from '@/constants/filters';
 
 export const Home = () => {
   const { character_list } = useCharacterStore();
@@ -99,7 +64,7 @@ export const Home = () => {
           </SelectTrigger>
           <SelectContent className="bg-black text-white">
             <SelectGroup>
-              {filters_status.map((element) => {
+              {FILTERS_STATUS.map((element) => {
                 return (
                   <SelectItem value={element.name} key={element._id}>
                     {element.name}
@@ -116,7 +81,7 @@ export const Home = () => {
           </SelectTrigger>
           <SelectContent className="bg-black text-white">
             <SelectGroup>
-              {filters_gender.map((element) => {
+              {FILTERS_GENDER.map((element) => {
                 return (
                   <SelectItem value={element.name} key={element._id}>
                     {element.name}
