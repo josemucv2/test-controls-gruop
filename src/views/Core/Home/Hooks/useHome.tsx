@@ -15,10 +15,10 @@ export const useHome = () => {
   const [status, setStatus] = useState('');
   const [gender, setGender] = useState('');
 
-  const getList = async (nameIs?: string) => {
+  const getList = async (name?: string) => {
     setLoading(true);
     try {
-      const list = await getListCharacter({ status, gender, name: nameIs });
+      const list = await getListCharacter({ status, gender, name });
       setPaginations(list.info);
       set_character_list(list.results);
     } catch (error: any) {
