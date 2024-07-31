@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useToast } from "@/Hooks/useToast";
-import { ICharacter, PaginationInfo } from "@/interfaces";
-import { getListCharacter, IResponseListCharacter } from "@/services/character";
-import { useCharacterStore } from "@/store/characters";
-import { useState } from "react";
-import { useGetInformation } from "@/Hooks/useGetInformation";
+import { useToast } from '@/Hooks/useToast';
+import { ICharacter, PaginationInfo } from '@/interfaces';
+import { getListCharacter, IResponseListCharacter } from '@/services/character';
+import { useCharacterStore } from '@/store/characters';
+import { useState } from 'react';
+import { useGetInformation } from '@/Hooks/useGetInformation';
 
 export const useHome = () => {
   const [loading, setLoading] = useState(false);
@@ -12,12 +12,10 @@ export const useHome = () => {
   const [pagination, setPaginations] = useState<PaginationInfo>();
   const { toast } = useToast();
   const { getInformation } = useGetInformation();
-  const [status, setStatus] = useState("");
-  const [gender, setGender] = useState("");
-  const [name, setName] = useState("");
+  const [status, setStatus] = useState('');
+  const [gender, setGender] = useState('');
 
-  const getList = async () => {
-    console.log(name, "jasndlkjalkjdak;jbd");
+  const getList = async (name?: string) => {
     setLoading(true);
     try {
       const list = await getListCharacter({ status, gender, name });
@@ -25,7 +23,7 @@ export const useHome = () => {
       set_character_list(list.results);
     } catch (error: any) {
       toast({
-        title: "Ha ocurrido un error inesperado",
+        title: 'Ha ocurrido un error inesperado',
         description: error.message,
       });
     } finally {
@@ -33,11 +31,11 @@ export const useHome = () => {
     }
   };
 
-  const changePage = async (direction: "next" | "prev") => {
+  const changePage = async (direction: 'next' | 'prev') => {
     setLoading(true);
 
     try {
-      const url = direction === "next" ? pagination?.next : pagination?.prev;
+      const url = direction === 'next' ? pagination?.next : pagination?.prev;
       if (url) {
         const restList = await getInformation<IResponseListCharacter>(url);
 
@@ -46,13 +44,13 @@ export const useHome = () => {
           set_character_list(restList.results);
         } else {
           throw {
-            message: "error in el get",
+            message: 'error in el get',
           };
         }
       }
     } catch (error: any) {
       toast({
-        title: "Ha ocurrido un error inesperado",
+        title: 'Ha ocurrido un error inesperado',
         description: error.message,
       });
     } finally {
@@ -76,8 +74,6 @@ export const useHome = () => {
     status,
     gender,
     setGender,
-    setName,
-    name,
     create,
   };
 };
