@@ -1,10 +1,9 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import HTTP from "@/config/fetch";
+import { HTTPS } from "@/config/fetch";
 import { useToast } from "./useToast"
 
 
-const initializer = HTTP.getInstance()
 
 
 
@@ -17,7 +16,7 @@ export const useGetInformation = () => {
     const getInformation = async <T>(url: string) => {
 
         try {
-            const getAll = await initializer.get<T>(url)
+            const getAll = await HTTPS.get<T>(url)
 
             return getAll
 
