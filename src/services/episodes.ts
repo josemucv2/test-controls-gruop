@@ -1,7 +1,6 @@
-import HTTP from "@/config/fetch";
+import { HTTPS } from "@/config/fetch";
 import { IEpisodes, PaginationInfo } from "@/interfaces";
 
-const initializer = HTTP.getInstance()
 
 export interface IResponseEpisodes {
     info: PaginationInfo,
@@ -10,5 +9,5 @@ export interface IResponseEpisodes {
 
 
 export const getListEpisodes = async () => {
-    return await initializer.get<IResponseEpisodes>('episode')
+    return await HTTPS.get<IResponseEpisodes>('episode')
 }

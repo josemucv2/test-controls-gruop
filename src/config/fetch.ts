@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+enum METHODS {
+    GET = 'GET',
+    POST = 'POST',
+    PUT = 'PUT',
+    DELETE = 'DELETE'
+}
+
 type PropsFetch = {
     url: string;
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
+    method: METHODS;
     options?: RequestInit;
     timeOut?: number;
     body?: unknown;
@@ -14,6 +21,15 @@ export type CustomPromises<T> = Promise<
     }
 >;
 
+interface IServiceConsumer {
+    get: <T>(url: string, options?: RequestInit) => Promise<T>
+    post: <T>(url: string, body: unknown, options?: RequestInit) => Promise<T>
+    put: <T>(url: string, body: unknown, options?: RequestInit) => Promise<T>
+    delete: (url: string, options?: RequestInit) => Promise<unknown>
+
+}
+
+
 /**
  * Objeto de propiedades para realizar solicitudes fetch.
  * @param url - La URL a la que se enviará la solicitud.
@@ -23,7 +39,7 @@ export type CustomPromises<T> = Promise<
  * @param body - Cuerpo de la solicitud, si corresponde.
  */
 
-class HTTP {
+class HTTP implements IServiceConsumer {
 
     private static instance: HTTP
 
@@ -50,7 +66,7 @@ class HTTP {
             signal,
             headers: { ...defaultHeaders, ...(options.headers || {}) },
             method,
-            body: method === 'PUT' || method === 'POST' || method === 'DELETE' ? JSON.stringify(body) : undefined,
+            body: method === METHODS.PUT || method === METHODS.POST || method === METHODS.DELETE ? JSON.stringify(body) : undefined,
         };
 
         const isCompleteURL = /^https?:\/\//i.test(url);
@@ -72,21 +88,21 @@ class HTTP {
     }
 
     async get<T>(url: string, options?: RequestInit) {
-        return await this._request<T>({ url, method: 'GET', options });
+        return await this._request<T>({ url, method: METHODS.GET, options });
     }
 
     async post<T>(url: string, body: unknown, options?: RequestInit) {
-        return await this._request<T>({ url, method: 'POST', body, options });
+        return await this._request<T>({ url, method: METHODS.POST, body, options });
     }
 
     async put<T>(url: string, body: unknown, options?: RequestInit) {
-        return await this._request<T>({ url, method: 'PUT', body, options });
+        return await this._request<T>({ url, method: METHODS.PUT, body, options });
     }
 
     async delete(url: string, options?: RequestInit) {
-        return await this._request({ url, method: 'DELETE', options });
+        return await this._request({ url, method: METHODS.DELETE, options });
     }
 }
 
-export default HTTP
+export const HTTPS = HTTP.getInstance()
 
