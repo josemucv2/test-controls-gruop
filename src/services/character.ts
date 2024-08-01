@@ -1,9 +1,5 @@
-import HTTP from "@/config/fetch";
+import { HTTPS } from "@/config/fetch";
 import { ICharacter, PaginationInfo } from "@/interfaces";
-
-
-const initializer = HTTP.getInstance()
-
 export interface IResponseListCharacter {
     info: PaginationInfo,
     results: ICharacter[]
@@ -16,6 +12,6 @@ type Filters = {
 }
 
 export const getListCharacter = async ({ status, gender, name }: Filters) => {
-    return await initializer.get<IResponseListCharacter>(`character?status=${status}&gender=${gender}&name=${name}`);
+    return await HTTPS.get<IResponseListCharacter>(`character?status=${status}&gender=${gender}&name=${name}`);
 };
 
