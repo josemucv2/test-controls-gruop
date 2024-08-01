@@ -13,21 +13,27 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui";
-import { useCharacterStore } from "@/store/characters";
-import s from "./character.module.css";
-import { useForm } from "react-hook-form";
-import { ICharacter } from "@/interfaces";
-import { useToast } from "@/Hooks/useToast";
-import { useState } from "react";
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui';
+import { useCharacterStore } from '@/store/characters';
+import s from './character.module.css';
+import { useForm } from 'react-hook-form';
+import { ICharacter } from '@/interfaces';
+import { useToast } from '@/Hooks/useToast';
+import { useState } from 'react';
+import { FILTERS_GENDER, FILTERS_STATUS } from '@/constants/filters';
+import { CHARACTER_GENDER, CHARACTER_STATUS } from '@/enums/character';
 
 export const CharacterManually = () => {
   const { character_list, set_character_list } = useCharacterStore();
-  const { register, handleSubmit, reset } = useForm<Partial<ICharacter>>();
+  const { register, handleSubmit, reset, setValue, getValues } = useForm<Partial<ICharacter>>();
   const { toast } = useToast();
-  const [editingCharacterId, setEditingCharacterId] = useState<
-    number | undefined
-  >(undefined);
+  const [editingCharacterId, setEditingCharacterId] = useState<number | undefined>(undefined);
 
   const newCharacter = (data: Partial<ICharacter>) => {
     const { name, species, status, gender } = data;
@@ -40,8 +46,8 @@ export const CharacterManually = () => {
     };
     set_character_list([...character_list, newCharacter]);
     toast({
-      title: "Agregado con Existo",
-      description: "El elemento agregado solo sera valido para esta vista",
+      title: 'Agregado con Existo',
+      description: 'El elemento agregado solo sera valido para esta vista',
     });
   };
 
@@ -51,8 +57,8 @@ export const CharacterManually = () => {
     );
     set_character_list(updatedCharacterList);
     toast({
-      title: "Character Updated",
-      description: "The character has been successfully updated.",
+      title: 'Character Updated',
+      description: 'The character has been successfully updated.',
     });
     reset();
     setEditingCharacterId(undefined);
@@ -61,12 +67,20 @@ export const CharacterManually = () => {
     reset(char);
   };
 
+  const handleStatusChange = async (data: CHARACTER_STATUS) => {
+    setValue('status', data);
+  };
+
+  const handleGenderChange = async (data: CHARACTER_GENDER) => {
+    setValue('gender', data);
+  };
+
   return (
     <div>
       <div className="text-2xl font-bold mb-10">Create New List</div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline" onClick={() => reset()}>
+          <Button variant="outline" onClick={() => reset({})}>
             Create Character
           </Button>
         </DialogTrigger>
@@ -116,18 +130,54 @@ export const CharacterManually = () => {
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid items-center gap-4">
-                <Input placeholder="name" {...register("name")} />
-                <Input placeholder="species" {...register("species")} />
-                <Input placeholder="status" {...register("status")} />
-                <Input placeholder="gender" {...register("gender")} />
+                <Input placeholder="name" {...register('name')} />
+                <Input placeholder="species" {...register('species')} />
+
+                <Select onValueChange={handleStatusChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a Status" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-black text-white">
+                    <SelectGroup>
+                      {FILTERS_STATUS.map((element) => {
+                        return (
+                          <SelectItem
+                            value={element.name}
+                            key={element._id}
+                            defaultValue={getValues().status}
+                          >
+                            {element.name}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+
+                <Select onValueChange={handleGenderChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a Gender" defaultValue={getValues().gender} />
+                  </SelectTrigger>
+                  <SelectContent className="bg-black text-white">
+                    <SelectGroup>
+                      {FILTERS_GENDER.map((element) => {
+                        return (
+                          <SelectItem
+                            value={element.name}
+                            key={element._id}
+                            defaultValue={getValues().gender}
+                          >
+                            {element.name}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <DialogFooter>
-              <Button
-                onClick={handleSubmit(
-                  editingCharacterId ? updateCharacter : newCharacter
-                )}
-              >
+              <Button onClick={handleSubmit(editingCharacterId ? updateCharacter : newCharacter)}>
                 Save changes
               </Button>
             </DialogFooter>
